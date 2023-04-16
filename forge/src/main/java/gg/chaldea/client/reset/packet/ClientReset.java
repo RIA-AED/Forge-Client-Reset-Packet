@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.login.ClientLoginNetHandler;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.ProtocolType;
+import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -86,12 +87,14 @@ public class ClientReset {
 
             // Preserve
             ServerData serverData = Minecraft.getInstance().getCurrentServer();
+            ResourcePackInfo serverPack = Minecraft.getInstance().getClientPackSource().serverPack;
 
             // Clear
             if (Minecraft.getInstance().level == null) {
                 // Ensure the GameData is reverted in case the client is reset during the handshake.
                 GameData.revertToFrozen();
             }
+            Minecraft.getInstance().getClientPackSource().serverPack = null;
 
             // Clear
             Minecraft.getInstance().clearLevel(new DirtMessageScreen(new TranslationTextComponent("connect.negotiating")));
@@ -104,6 +107,7 @@ public class ClientReset {
             } catch (NoSuchElementException ignored) {
             }
             // Restore
+            Minecraft.getInstance().getClientPackSource().serverPack = serverPack;
             Minecraft.getInstance().setCurrentServer(serverData);
         });
 
