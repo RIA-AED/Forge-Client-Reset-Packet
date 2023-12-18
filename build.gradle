@@ -18,7 +18,7 @@ subprojects {
     task versionedRelease(type: Copy) {
         group "build"
         from('./build/reobfJar/output.jar')
-        into('../release/')
+        into('../target/')
         include '*.jar'
         rename { String filename ->
             filename.replace("output.jar", "${rootProject.name}-${project.version}.jar")
